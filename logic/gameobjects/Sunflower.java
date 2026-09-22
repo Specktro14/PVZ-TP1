@@ -11,6 +11,14 @@ public class Sunflower {
 	private int frecuency;
 	private int damage;
 
+	public Sunflower(int col, int row) {
+	  this.col = col;
+		this.row = row;
+	  this.cost = 20;
+		this.resistance = 1;
+		this.frecuency = 3;
+	}
+
 	// Getters
 	public int getX() { return x; }
 	public int getY() { return y; }

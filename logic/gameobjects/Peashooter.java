@@ -7,23 +7,33 @@ public class Peashooter {
 	private int resistance;
 	private int frecuency;
 	private int damage;
-	private int range;
+	// private int range;
 
+	public Peashooter(int col, int row) {
+	  this.row = row;
+		this.col = col;
+		this.cost = 50;
+		this.resistance = 3;
+		this.damage = 1;
+		this.frecuency = 1;
+		// Falta range
+	}
+	
 	// Getters
-	public int getX() { return x; }
-	public int getY() { return y; }
+	public int getCol() { return col; }
+	public int getRow() { return row; }
 	public int getCost() { return cost; }
 	public int getResistance() { return resistance; }
 	public int getFrecuency() { return frecuency; }
 	public int getDamage() { return damage; }
-	public int getRange() { return range; }
+	//public int getRange() { return range; }
 
 	// Setters
-	public void setX(int newX) { x = newX; }
-	public void setY(int newY) { y = newY; }
+	public void setCol(int newCol) { col = newCol; }
+	public void setRow(int newRow) { row = newRow; }
 	public void setCost(int newCost) { cost = newCost; }
 	public void setResistance(int newResistance) { resistance = newResistance; }
 	public void setFrecuency(int newFrecuency) { frecuency = newFrecuency; }
 	public void setDamage(int newDamage) { damage = newDamage; }
-	public void setRange(int newRange) { range = newRange; }
+	//public void setRange(int newRange) { range = newRange; }
 }
