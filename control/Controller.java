@@ -29,6 +29,50 @@ public class Controller {
 	 */
 	public void run() {
 		// TODO fill your code
-	}
+		// 
+		// Posibilidad ALTA de cambios
+		boolean message = false;
+		
+		while(!game.hasEnded()) {
+		  // Draw
+			if (!message) {
+			  view.showGame();
+			}
 
+			// User Action
+			String[] words = view.getPrompt();
+
+			switch(words[0]) {
+			  case "add": {
+					
+			    break;
+			  }
+				case "reset": {
+				  break;
+				}
+				case "list": {
+				  view.showMessage(Messages.LIST);
+					message = true;
+				  break;
+				}
+				case "exit": {
+				  break;
+				}
+				case "help": {
+				  view.showMessage(Messages.HELP);
+					message = true;
+					break;
+				}
+				case "none": {
+				} 
+				default: {
+				  break;
+				}
+			}
+
+			if (!message) {
+			
+			}
+		}
+	}
 }
