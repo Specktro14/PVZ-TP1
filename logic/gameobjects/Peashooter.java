@@ -1,5 +1,7 @@
 package pvz.logic.gameobjects;
 
+import pvz.view.Messages;
+
 public class Peashooter {
   private int col;
   private int row;
@@ -17,6 +19,10 @@ public class Peashooter {
 		this.damage = 1;
 		this.frecuency = 1;
 		// Falta range
+	}
+
+	public String getDescripion() {
+	  return Messages.PEASHOOTER_DESCRIPTION.formatted(this.cost, this.damage, this.resistance);
 	}
 	
 	// Getters

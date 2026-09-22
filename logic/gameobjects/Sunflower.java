@@ -1,5 +1,7 @@
 package pvz.logic.gameobjects;
 
+import pvz.view.Messages;
+
 /**
  * Sunflower
  */
@@ -19,6 +21,10 @@ public class Sunflower {
 		this.frecuency = 3;
 	}
 
+	public String getDescripion() {
+	  return Messages.SUNFLOWER_DESCRIPTION.formatted(this.cost, this.damage, this.resistance);
+	}
+	
 	// Getters
 	public int getX() { return x; }
 	public int getY() { return y; }
