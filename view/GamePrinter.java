@@ -61,7 +61,12 @@ public class GamePrinter implements GameView {
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
 
-		// TODO fill your code
+		buffer.append("Level:" + game.getLevel().name() + "\n");
+		buffer.append("Random generator initialized with seed: " + game.getSeed() + "\n");
+		buffer.append("Number of cycles: " + game.getCycleCounter() + "\n");
+		buffer.append("Sun coins: " + game.getSunCoins() + "\n");
+		buffer.append("Remaining zombies: " + game.getLevel().getNumberOfZombies() + "\n");
+		buffer.append("\n");
 
 		return buffer.toString();
 	}
