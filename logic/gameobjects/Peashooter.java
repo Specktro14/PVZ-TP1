@@ -1,45 +1,41 @@
 package pvz.logic.gameobjects;
 
+import pvz.logic.Game;
 import pvz.view.Messages;
 
 public class Peashooter {
   private int col;
   private int row;
-  private int cost;
-	private int resistance;
-	private int frecuency;
-	private int damage;
+  private static final int COST = 50;
+	private static final int ENDURANCE = 3;
+	private static final int DAMAGE = 1;
+	private static final double FREQUENCY = 1;
+
+	private Game game;
 	// private int range;
 
-	public Peashooter(int col, int row) {
+	public Peashooter(int col, int row, Game game) {
 	  this.row = row;
 		this.col = col;
-		this.cost = 50;
-		this.resistance = 3;
-		this.damage = 1;
-		this.frecuency = 1;
+		this.game = game;
 		// Falta range
 	}
 
-	public String getDescripion() {
-	  return Messages.PEASHOOTER_DESCRIPTION.formatted(this.cost, this.damage, this.resistance);
+	public static String getDescription() {
+	  return Messages.PEASHOOTER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
 	}
 	
 	// Getters
 	public int getCol() { return col; }
 	public int getRow() { return row; }
-	public int getCost() { return cost; }
-	public int getResistance() { return resistance; }
-	public int getFrecuency() { return frecuency; }
-	public int getDamage() { return damage; }
+	public int getCost() { return COST; }
+	public int getEndurance() { return ENDURANCE; }
+	public double getFrequency() { return FREQUENCY; }
+	public int getDamage() { return DAMAGE; }
 	//public int getRange() { return range; }
 
 	// Setters
 	public void setCol(int newCol) { col = newCol; }
 	public void setRow(int newRow) { row = newRow; }
-	public void setCost(int newCost) { cost = newCost; }
-	public void setResistance(int newResistance) { resistance = newResistance; }
-	public void setFrecuency(int newFrecuency) { frecuency = newFrecuency; }
-	public void setDamage(int newDamage) { damage = newDamage; }
 	//public void setRange(int newRange) { range = newRange; }
 }

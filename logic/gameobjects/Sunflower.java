@@ -1,5 +1,6 @@
 package pvz.logic.gameobjects;
 
+import pvz.logic.Game;
 import pvz.view.Messages;
 
 /**
@@ -8,38 +9,34 @@ import pvz.view.Messages;
 public class Sunflower {
   private int col;
   private int row;
-  private int cost;
-	private int resistance;
-	private int frecuency;
-	private int damage;
+  private static final int COST = 20;
+	private static final int ENDURANCE = 1;
+	private static final int DAMAGE = 0;
+	private static final double FREQUENCY = 0.33;
 
-	public Sunflower(int col, int row) {
+	private Game game;
+
+	public Sunflower(int col, int row, Game game) {
 	  this.col = col;
 		this.row = row;
-	  this.cost = 20;
-		this.resistance = 1;
-		this.frecuency = 3;
+		this.game = game;
 	}
 
-	public String getDescripion() {
-	  return Messages.SUNFLOWER_DESCRIPTION.formatted(this.cost, this.damage, this.resistance);
+	public static String getDescription() {
+	  return Messages.SUNFLOWER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
 	}
 	
 	// Getters
-	public int getX() { return x; }
-	public int getY() { return y; }
-	public int getCost() { return cost; }
-	public int getResistance() { return resistance; }
-	public int getFrecuency() { return frecuency; }
-	public int getDamage() { return damage; }
+	public int getCol() { return col; }
+	public int getRow() { return row; }
+	public int getCost() { return COST; }
+	public int getEndurance() { return ENDURANCE; }
+	public int getDamage() { return DAMAGE; }
+	public double getFrequency() { return FREQUENCY; }
+	//public int getRange() { return range; }
 
 	// Setters
-	public void setX(int newX) { x = newX; }
-	public void setY(int newY) { y = newY; }
-	public void setCost(int newCost) { cost = newCost; }
-	public void setResistance(int newResistance) { resistance = newResistance; }
-	public void setFrecuency(int newFrecuency) { frecuency = newFrecuency; }
-	public void setDamage(int newDamage) { damage = newDamage; }
-
-	
+	public void setCol(int newCol) { col = newCol; }
+	public void setRow(int newRow) { row = newRow; }
+	//public void setRange(int newRange) { range = newRange; }	
 }
