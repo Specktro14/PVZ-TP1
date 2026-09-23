@@ -1,6 +1,7 @@
 package pvz.logic.gameobjects;
 
 import pvz.logic.Game;
+import pvz.utils.Position;
 import pvz.view.Messages;
 
 /**
@@ -9,34 +10,50 @@ import pvz.view.Messages;
 public class Sunflower {
   private int col;
   private int row;
-  private static final int COST = 20;
-	private static final int ENDURANCE = 1;
-	private static final int DAMAGE = 0;
-	private static final double FREQUENCY = 0.33;
+  private int hp;
+  
+  private static int COST = 20;
+	private static int ENDURANCE = 1;
+	private static int DAMAGE = 0;
+
+	private static final int COOLDOWN = 3;
+	private int counter;
 
 	private Game game;
 
-	public Sunflower(int col, int row, Game game) {
-	  this.col = col;
-		this.row = row;
+	public Sunflower(Position pos, Game game) {
+	  this.col = pos.getCol();
+		this.row = pos.getRow();
 		this.game = game;
+		this.hp = ENDURANCE;
+		this.counter = 0;
 	}
 
 	public static String getDescription() {
 	  return Messages.SUNFLOWER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
 	}
-	
-	// Getters
-	public int getCol() { return col; }
-	public int getRow() { return row; }
-	public int getCost() { return COST; }
-	public int getEndurance() { return ENDURANCE; }
-	public int getDamage() { return DAMAGE; }
-	public double getFrequency() { return FREQUENCY; }
-	//public int getRange() { return range; }
 
-	// Setters
-	public void setCol(int newCol) { col = newCol; }
-	public void setRow(int newRow) { row = newRow; }
-	//public void setRange(int newRange) { range = newRange; }	
+	public String getIcon() {
+	  return Messages.SUNFLOWER_ICON.formatted(hp);
+	}
+	  
+	public boolean isAlive() {
+	  return hp > 0;
+	}
+
+	public boolean isInPosition(Position pos) {
+	  return row == pos.getRow() && col == pos.getCol();
+	}
+
+	public void receiveDamage(int damage) {
+	  hp -= damage;
+	}
+
+	public void update() {
+	  if (this.counter == COOLDOWN && isAlive()) {
+			game.addSunCoins(10);
+			counter = 0;
+		}
+	  counter++;
+	}
 }

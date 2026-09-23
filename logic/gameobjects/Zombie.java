@@ -33,7 +33,7 @@ public class Zombie {
   }
 
   public boolean isAlive() {
-    return hp <= 0;
+    return hp > 0;
   }
   
   public boolean isInPosition(Position pos) {

@@ -68,7 +68,12 @@ public class Game {
 
   // Private void removeDead()
 
+  // TODO Añadir logica del isEmpty
   public boolean isEmpty(Position pos) {
     return true;
+  }
+
+  public void addSunCoins(int sunCoins) {
+    this.sunCoins += sunCoins;
   }
 } 

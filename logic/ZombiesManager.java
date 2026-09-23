@@ -40,7 +40,7 @@ public class ZombiesManager {
 	 * 
 	 * @return <code>true</code> if a zombie should be added to the game.
 	 */
-	private boolean shouldAddZombie() {
+	public boolean shouldAddZombie() {
 		return rand.nextDouble() < level.getZombieFrequency();
 	}
 	
