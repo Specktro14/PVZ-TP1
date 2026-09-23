@@ -42,8 +42,15 @@ public class Controller {
 			// User Action
 			String[] words = view.getPrompt();
 
+			// Añadir short commmand y refactorizar
 			switch(words[0]) {
 			  case "add": {
+					if (words.length < 2 || words.length > 4) {
+					  view.showMessage(Messages.COMMAND_PARAMETERS_MISSING);
+					  message = true;
+					}
+
+					
 					
 			    break;
 			  }
@@ -56,6 +63,9 @@ public class Controller {
 				  break;
 				}
 				case "exit": {
+				  view.showMessage(Messages.GAME_OVER);
+				  view.showMessage(Messages.PLAYER_QUITS);
+					game.setEndGame(true);
 				  break;
 				}
 				case "help": {
@@ -65,13 +75,18 @@ public class Controller {
 				}
 				case "none": {
 				} 
+				case Messages.EMPTY_STRING: {
+				  break;
+				}
 				default: {
+				  view.showMessage(Messages.UNKNOWN_COMMAND);
+					message = true;
 				  break;
 				}
 			}
 
-			if (!message) {
-			
+			if (!message || !game.hasEnded()) {
+			  game.update();
 			}
 		}
 	}
