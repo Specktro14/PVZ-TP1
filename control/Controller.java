@@ -33,7 +33,7 @@ public class Controller {
 		// Posibilidad ALTA de cambios
 		boolean message = false;
 		
-		while(!game.hasEnded()) {
+		while(!game.hasGameFinished() && !game.playerQuits()) {
 		  // Draw
 			if (!message) {
 			  view.showGame();
@@ -85,7 +85,7 @@ public class Controller {
 				}
 			}
 
-			if (!message || !game.hasEnded()) {
+			if (!message || !game.hasGameFinished()) {
 			  game.update();
 			}
 		}

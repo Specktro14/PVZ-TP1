@@ -5,5 +5,8 @@ package pvz.logic.gameobjects;
  */
 public class ZombieList {
   private Zombie[] list;
-	
+
+  public Zombie[] getList() {
+    return list;
+  }
 }
