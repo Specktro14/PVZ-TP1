@@ -1,7 +1,6 @@
 package pvz.logic;
 
 import java.util.Random;
-
 import pvz.control.Level;
 import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.ZombieList;
@@ -18,70 +17,87 @@ import pvz.utils.Position;
  */
 public class ZombiesManager {
 
-	private Game game;
+  private Game game;
 
-	private Level level;
+  private Level level;
 
-	private Random rand;
+  private Random rand;
 
-	private int remainingZombies;
+  private int remainingZombies;
 
-	private ZombieList zombies;
+  private ZombieList zombies;
 
-	public ZombiesManager(Game game, Level level, Random rand) {
-		this.game = game;
-		this.level = level;
-		this.rand = rand;
-		this.remainingZombies = level.getNumberOfZombies();
-		this.zombies = new ZombieList();
-	}
+  public ZombiesManager(Game game, Level level, Random rand) {
+    this.game = game;
+    this.level = level;
+    this.rand = rand;
+    this.remainingZombies = level.getNumberOfZombies();
+    this.zombies = new ZombieList(level.getNumberOfZombies());
+  }
 
-	/**
-	 * Checks if the game should add (if possible) a zombie to the game.
-	 * 
-	 * @return <code>true</code> if a zombie should be added to the game.
-	 */
-	public boolean shouldAddZombie() {
-		return rand.nextDouble() < level.getZombieFrequency();
-	}
-	
-	/**
-	 * Return a random row within the board limits.
-	 * 
-	 * @return a random row.
-	 */
-	private int randomZombieRow() {
-		return rand.nextInt(Game.NUM_ROWS);
-	}
-	
-	public boolean addZombie() {
-		int row = randomZombieRow();
-		return addZombie(row);
-	}
+  /**
+   * Checks if the game should add (if possible) a zombie to the game.
+   *
+   * @return <code>true</code> if a zombie should be added to the game.
+   */
+  public boolean shouldAddZombie() {
+    return rand.nextDouble() < level.getZombieFrequency();
+  }
 
-	public boolean addZombie(int row) {
-		boolean canAdd = getRemainingZombies() > 0 && shouldAddZombie()
-				&& isPositionEmpty(Game.NUM_COLS, row);
+  /**
+   * Return a random row within the board limits.
+   *
+   * @return a random row.
+   */
+  private int randomZombieRow() {
+    return rand.nextInt(Game.NUM_ROWS);
+  }
 
-		if(canAdd) {
-			// TODO fill your code
+  public boolean addZombie() {
+    int row = randomZombieRow();
+    return addZombie(row);
+  }
 
-			
-		}
-		return canAdd;
-	}
+  public boolean addZombie(int row) {
+    boolean canAdd =
+      getRemainingZombies() > 0 &&
+      shouldAddZombie() &&
+      isPositionEmpty(Game.NUM_COLS - 1, row);
 
-	// TODO fill your code
+    if (canAdd) {
+      zombies.addZombie(new Position(row, Game.NUM_COLS - 1), game);
+      remainingZombies--;
+    }
+    return canAdd;
+  }
 
-	public boolean isPositionEmpty(int col, int row) {
-	  return game.isEmpty(new Position(row, col));
-	}
-	
-	public int getRemainingZombies() {
-	  return remainingZombies;
-	}
-	
-	public boolean allZombiesDead() {
-	  return remainingZombies == 0 && zombies.getList().length == 0;
-	}
+  // ERROR: Peligro, getter suelto
+  public ZombieList getZombieList() {
+    return this.zombies;
+  }
+
+  public boolean isPositionEmpty(int row, int col) {
+    return game.isEmpty(new Position(row, col));
+  }
+
+  // ERROR: Peligro, getter suelto
+  public int getRemainingZombies() {
+    return remainingZombies;
+  }
+
+  public boolean allZombiesDead() {
+    return remainingZombies == 0 && zombies.getCounter() == 0;
+  }
+
+  public boolean zombiesInRow(int row) {
+    return zombies.getZombieIndexByRow(row) != -1;
+  }
+
+  public Zombie getZombieByRow(int row) {
+    return zombies.getZombieByRow(row);
+  }
+
+  public boolean haveZombiesCrossed() {
+    return zombies.haveZombiesCrossed();
+  }
 }

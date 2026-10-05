@@ -8,13 +8,14 @@ import pvz.view.Messages;
  * Zombie
  */
 public class Zombie {
+
   private int row;
   private int col;
   private int hp;
-  
+
   private static int ENDURANCE = 5;
   private static int DAMAGE = 1;
-  
+
   private final int MOVE_EVERY_CYCLES = 2;
   private int counter;
 
@@ -28,6 +29,14 @@ public class Zombie {
     this.counter = 0;
   }
 
+  public int getRow() {
+    return row;
+  }
+
+  public int getCol() {
+    return col;
+  }
+
   public String getIcon() {
     return Messages.ZOMBIE_ICON.formatted(hp);
   }
@@ -35,7 +44,7 @@ public class Zombie {
   public boolean isAlive() {
     return hp > 0;
   }
-  
+
   public boolean isInPosition(Position pos) {
     return row == pos.getRow() && col == pos.getCol();
   }
@@ -45,14 +54,28 @@ public class Zombie {
   }
 
   public void update() {
+    // TODO Preguntar si el zombie siempre ataca, sin tener en cuenta el com
     if (counter == MOVE_EVERY_CYCLES && isAlive()) {
-      if (!game.isEmpty(new Position(row, col))) {
-        // TODO Añadir ataque del zombie
+      Position pos = new Position(row, col - 1);
+      if (!game.isEmpty(pos)) {
+        attack(pos);
       } else {
         col -= 1;
       }
       counter = 0;
     }
     counter++;
+  }
+
+  private void attack(Position pos) {
+    String icon = game.positionToString(pos);
+    if (icon.length() >= 2) {
+      char plantType = icon.charAt(1);
+      if (plantType == 'P') {
+        game.getPeashooterByPosition(pos).receiveDamage(DAMAGE);
+      } else if (plantType == 'S') {
+        game.getSunflowerByPosition(pos).receiveDamage(DAMAGE);
+      }
+    }
   }
 }

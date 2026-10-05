@@ -12,11 +12,20 @@ public class Position {
     this.col = col;
   }
 
+  public Position(String row, String col) {
+    this.row = Integer.parseInt(row);
+    this.col = Integer.parseInt(col);
+  }
+
   public int getRow() { 
     return this.row;
   }
 
   public int getCol() {
     return this.col;
+  }
+
+  public boolean equals(Position pos) {
+    return row == pos.row && col == pos.col;
   }
 }

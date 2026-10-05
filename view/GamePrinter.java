@@ -65,23 +65,20 @@ public class GamePrinter implements GameView {
   private String getInfo() {
     StringBuilder buffer = new StringBuilder();
 
+    // buffer.append(
+    //   Messages.CONFIGURED_LEVEL.formatted(game.getLevel().name()) + NEW_LINE
+    // );
+    // buffer.append(
+    //   Messages.CONFIGURED_SEED.formatted(game.getSeed()) + NEW_LINE
+    // );
     buffer.append(
-      Messages.CONFIGURED_LEVEL.formatted(game.getLevel().name()) + NEW_LINE
-    );
+      Messages.NUMBER_OF_CYCLES.formatted(game.getCycleCounter()));
     buffer.append(
-      Messages.CONFIGURED_SEED.formatted(game.getSeed()) + NEW_LINE
-    );
-    buffer.append(
-      Messages.NUMBER_OF_CYCLES.formatted(game.getCycleCounter()) + NEW_LINE
-    );
-    buffer.append(
-      Messages.NUMBER_OF_COINS.formatted(game.getSunCoins()) + NEW_LINE
-    );
+      Messages.NUMBER_OF_COINS.formatted(game.getSunCoins()));
     buffer.append(
       Messages.REMAINING_ZOMBIES.formatted(
-        game.getLevel().getNumberOfZombies()
-      ) + NEW_LINE
-    );
+        game.getZManager().getRemainingZombies()
+      ));
     buffer.append(NEW_LINE);
 
     return buffer.toString();
@@ -124,7 +121,14 @@ public class GamePrinter implements GameView {
   @Override
   public void showEndMessage() {
     StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
-    // TODO fill your code
+    buffer.append("\n");
+    if (game.getPlayerQuits()) {
+      buffer.append(Messages.PLAYER_QUITS);
+    } else if (game.getPlayerDead()) {
+      buffer.append(Messages.ZOMBIES_WIN);
+    } else {
+      buffer.append(Messages.PLAYER_WINS);
+    }
     System.out.println(buffer);
   }
 

@@ -31,16 +31,16 @@ public class Sunflower {
     this.counter = 0;
   }
 
-  public String getName() {
-    return NAME;
-  }
-
   public static String getDescription() {
     return Messages.SUNFLOWER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
   }
-
+  
   public String getIcon() {
     return Messages.SUNFLOWER_ICON.formatted(hp);
+  }
+
+  public boolean canBeAdded(int totalSuncoins) {
+    return totalSuncoins > COST;
   }
 
   public boolean isAlive() {

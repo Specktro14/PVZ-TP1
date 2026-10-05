@@ -39,6 +39,9 @@ public class StringUtils {
 		int paddingLeft = paddingRight + paddingLength % 2;
 		
 	    return String.format("%s%s%s", repeat(paddingChar, paddingLeft), text, repeat(paddingChar, paddingRight));
-	}
+	}	
 
+	public static boolean isDigitString(String s) {
+	  return s.matches("\\d");
+	}
 }
