@@ -1,45 +1,65 @@
 package pvz.logic.gameobjects;
 
+import pvz.logic.Game;
+import pvz.utils.Position;
 import pvz.view.Messages;
 
 /**
  * Sunflower
  */
 public class Sunflower {
+
   private int col;
   private int row;
-  private int cost;
-	private int resistance;
-	private int frecuency;
-	private int damage;
+  private int hp;
 
-	public Sunflower(int col, int row) {
-	  this.col = col;
-		this.row = row;
-	  this.cost = 20;
-		this.resistance = 1;
-		this.frecuency = 3;
-	}
+  private static final String NAME = "sunflower";
+  private static int COST = 20;
+  private static int ENDURANCE = 1;
+  private static int DAMAGE = 0;
 
-	public String getDescripion() {
-	  return Messages.SUNFLOWER_DESCRIPTION.formatted(this.cost, this.damage, this.resistance);
-	}
-	
-	// Getters
-	public int getX() { return x; }
-	public int getY() { return y; }
-	public int getCost() { return cost; }
-	public int getResistance() { return resistance; }
-	public int getFrecuency() { return frecuency; }
-	public int getDamage() { return damage; }
+  private static final int COOLDOWN = 3;
+  private int counter;
 
-	// Setters
-	public void setX(int newX) { x = newX; }
-	public void setY(int newY) { y = newY; }
-	public void setCost(int newCost) { cost = newCost; }
-	public void setResistance(int newResistance) { resistance = newResistance; }
-	public void setFrecuency(int newFrecuency) { frecuency = newFrecuency; }
-	public void setDamage(int newDamage) { damage = newDamage; }
+  private Game game;
 
-	
+  public Sunflower(Position pos, Game game) {
+    this.col = pos.getCol();
+    this.row = pos.getRow();
+    this.game = game;
+    this.hp = ENDURANCE;
+    this.counter = 0;
+  }
+
+  public String getName() {
+    return NAME;
+  }
+
+  public static String getDescription() {
+    return Messages.SUNFLOWER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
+  }
+
+  public String getIcon() {
+    return Messages.SUNFLOWER_ICON.formatted(hp);
+  }
+
+  public boolean isAlive() {
+    return hp > 0;
+  }
+
+  public boolean isInPosition(Position pos) {
+    return row == pos.getRow() && col == pos.getCol();
+  }
+
+  public void receiveDamage(int damage) {
+    hp -= damage;
+  }
+
+  public void update() {
+    if (this.counter == COOLDOWN && isAlive()) {
+      game.addSunCoins(10);
+      counter = 0;
+    }
+    counter++;
+  }
 }
