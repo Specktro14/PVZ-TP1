@@ -45,12 +45,12 @@ public class Controller {
 			// Añadir short commmand y refactorizar
 			switch(words[0]) {
 			  case "add": {
-					if (words.length < 2 || words.length > 4) {
-					  view.showMessage(Messages.COMMAND_PARAMETERS_MISSING);
-					  message = true;
+					if (addPlantCommand(words) == 0) {
+					  message = false;
 					}
-
-					
+					else {
+					message = true;					
+					}					
 					
 			    break;
 			  }
@@ -90,4 +90,56 @@ public class Controller {
 			}
 		}
 	}
+
+ private int addPlantCommand(String[] words) {
+    int exitCode = 0;
+
+    // Comprobar que esten todos los argumentos
+    if (words.length == 4) {
+      // Comprobar que los dos ultimos argumentos sean numeros
+      if (isDigitString(words[2]) && isDigitString(words[3])) {
+        Position pos = new Position(words[3], words[2]);
+        // Comprobar que la posicion esta vacia y esta dentro del tablero
+        if (game.correctPosition(pos)) {
+          // Comprobar que es una planta
+          if (game.checkGameObject(words[1])) {
+            // Añadimos planta, game se encarga de mirar las suncoins
+            exitCode = game.addGameObject(words[1], pos);
+          } else {
+            exitCode = 2;
+          }
+        } else {
+          exitCode = 3;
+        }
+      } else {
+        exitCode = 3;
+      }
+    } else {
+      exitCode = 1;
+    }
+
+    // Mostrando posibles errores
+    switch (exitCode) {
+      case 1: {
+        view.showError(Messages.COMMAND_PARAMETERS_MISSING);
+        break;
+      }
+      case 2: {
+        view.showError(Messages.INVALID_GAME_OBJECT);
+        break;
+      }
+      case 3: {
+        view.showError(Messages.INVALID_POSITION);
+        break;
+      }
+      case 4: {
+        view.showError(Messages.NOT_ENOUGH_COINS);
+        break;
+      }
+      default:
+        break;
+    }
+
+    return exitCode;
+  }
 }
