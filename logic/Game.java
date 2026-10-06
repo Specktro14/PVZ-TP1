@@ -101,18 +101,16 @@ public class Game {
     if (checkIsPeashooter(name)) {
       Peashooter plant = new Peashooter(pos, this);
       // Comprobar que hay suficientes suncoins
-      if (sunCoins >= plant.getCost()) {
+      if (plant.canBeAdded(sunCoins)) {
         pList.add(plant);
-        sunCoins -= plant.getCost();
       } else {
         exitCode = 4;
       }
     } else if (checkIsSunflower(name)) {
       Sunflower plant = new Sunflower(pos, this);
       // Comprobar que hay suficientes suncoins
-      if (sunCoins >= plant.getCost()) {
+      if (plant.canBeAdded(sunCoins)) {
         sList.add(plant);
-        sunCoins -= plant.getCost();
       } else {
         exitCode = 4;
       }
@@ -149,12 +147,11 @@ public class Game {
   }
   
   public boolean isInsideBoard(Position pos) {
-    return (
-      pos.getRow() >= 0 &&
-      pos.getRow() <= NUM_ROWS - 1 &&
-      pos.getCol() >= 0 &&
-      pos.getCol() <= NUM_COLS - 1
-    );
+    return pos.isInsideLimits(NUM_ROWS - 1, NUM_COLS - 1);
+  }
+
+  public boolean isEmpty(Position pos) {
+    return positionToString(pos).equals("");
   }
 
   public String positionToString(Position pos) {
@@ -166,10 +163,6 @@ public class Game {
       }
     }
     return ret;
-  }
-
-  public boolean isEmpty(Position pos) {
-    return positionToString(pos).equals("");
   }
 
   // Game cycles
@@ -192,12 +185,16 @@ public class Game {
     this.sunCoins += sunCoins;
   }
 
+  public void substractSunCoins(int sunCoins) {
+    this.sunCoins -= sunCoins; 
+  }
+
   // Reset
   public void reset() {
+    this.rand = new Random(seed);
     this.zombieM = new ZombiesManager(this, level, rand);
     this.pList = new PeashooterList();
     this.sList = new SunflowerList();
-    this.rand = new Random(seed);
     this.zList = this.zombieM.getZombieList();
     this.cycleCounter = 0;
     this.sunCoins = INITIAL_SUNS;

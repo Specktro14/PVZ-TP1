@@ -9,8 +9,7 @@ import pvz.view.Messages;
  */
 public class Sunflower {
 
-  private int col;
-  private int row;
+  private Position pos;
   private int hp;
 
   private static final String NAME = "sunflower";
@@ -24,13 +23,13 @@ public class Sunflower {
   private Game game;
 
   public Sunflower(Position pos, Game game) {
-    this.col = pos.getCol();
-    this.row = pos.getRow();
+    this.pos = pos;
     this.game = game;
     this.hp = ENDURANCE;
     this.counter = 0;
   }
 
+  // Getters para Gameview
   public static String getDescription() {
     return Messages.SUNFLOWER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
   }
@@ -39,16 +38,14 @@ public class Sunflower {
     return Messages.SUNFLOWER_ICON.formatted(hp);
   }
 
+  // Internal logic
   public boolean canBeAdded(int totalSuncoins) {
+    if (totalSuncoins > COST) game.substractSunCoins(COST);
     return totalSuncoins > COST;
   }
 
   public boolean isAlive() {
     return hp > 0;
-  }
-
-  public boolean isInPosition(Position pos) {
-    return row == pos.getRow() && col == pos.getCol();
   }
 
   public void receiveDamage(int damage) {
@@ -61,5 +58,9 @@ public class Sunflower {
       counter = 0;
     }
     counter++;
+  }
+
+  public boolean isInPosition(Position pos) {
+    return this.pos.equals(pos);
   }
 }

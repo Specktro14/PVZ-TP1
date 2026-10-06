@@ -26,6 +26,7 @@ public class ZombieList {
     counter++;
   }
 
+  // TODO Posible reestructuracion
   public String checkPosition(Position pos) {
     String ret = "";
     int i = 0;
@@ -44,7 +45,7 @@ public class ZombieList {
 
   public int getZombieIndexByRow(int row) {
     int i = 0;
-    while (i < counter && list[i].getRow() != row) {
+    while (i < counter && list[i].isInRow(row)) {
       i++;
     }
     if (i >= counter) i = -1;
@@ -60,7 +61,7 @@ public class ZombieList {
     boolean crossed = false;
     int i = 0;
     while (i < counter && !crossed) {
-      if (list[i].getCol() == -1) crossed = true;
+      if (list[i].hasCrossed()) crossed = true;
       i++;
     }
     return crossed;

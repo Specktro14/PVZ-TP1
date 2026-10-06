@@ -6,8 +6,7 @@ import pvz.view.Messages;
 
 public class Peashooter {
 
-  private int col;
-  private int row;
+  private Position pos;
   private int hp;
 
   private static final String NAME = "peashooter";
@@ -18,12 +17,12 @@ public class Peashooter {
   private Game game;
 
   public Peashooter(Position pos, Game game) {
-    this.row = pos.getRow();
-    this.col = pos.getCol();
+    this.pos = pos;
     this.game = game;
     this.hp = ENDURANCE;
   }
 
+  // Getters for Gameview
   public static String getDescription() {
     return Messages.PEASHOOTER_DESCRIPTION.formatted(COST, DAMAGE, ENDURANCE);
   }
@@ -32,16 +31,18 @@ public class Peashooter {
     return Messages.PEASHOOTER_ICON.formatted(hp);
   }
 
+  // Internal logic
   public boolean isAlive() {
     return hp > 0;
   }
 
-  public boolean isInPosition(Position pos) {
-    return row == pos.getRow() && col == pos.getCol();
-  }
-
   public void receiveDamage(int damage) {
     hp -= damage;
+  }
+
+  public boolean canBeAdded(int totalSuncoins) {
+    if (totalSuncoins > COST) game.substractSunCoins(COST);
+    return totalSuncoins > COST;
   }
 
   public void update() {
@@ -50,15 +51,15 @@ public class Peashooter {
     }
   }
 
-  public boolean canBeAdded(int totalSuncoins) {
-    return totalSuncoins > COST;
-  }
-
   private boolean zombiesInRange() {
     return game.getZManager().zombiesInRow(row);
   }
 
   private void shoot() {
     game.getZManager().getZombieByRow(row).receiveAttack(DAMAGE);
+  }
+
+  public boolean isInPosition(Position pos) {
+    return this.pos.equals(pos);
   }
 }

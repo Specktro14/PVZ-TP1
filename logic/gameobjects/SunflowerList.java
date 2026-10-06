@@ -19,7 +19,7 @@ public class SunflowerList {
     list[counter] = plant;
     counter++;
   }
-  
+
   public String checkPosition(Position pos) {
     String ret = "";
     int i = 0;

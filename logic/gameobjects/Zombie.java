@@ -9,8 +9,7 @@ import pvz.view.Messages;
  */
 public class Zombie {
 
-  private int row;
-  private int col;
+  private Position pos;
   private int hp;
 
   private static int ENDURANCE = 5;
@@ -22,31 +21,20 @@ public class Zombie {
   private Game game;
 
   public Zombie(Position pos, Game game) {
-    this.row = pos.getRow();
-    this.col = pos.getCol();
+    this.pos = pos;
     this.game = game;
     this.hp = ENDURANCE;
     this.counter = 0;
   }
 
-  public int getRow() {
-    return row;
-  }
-
-  public int getCol() {
-    return col;
-  }
-
+  // Getters para Gameview
   public String getIcon() {
     return Messages.ZOMBIE_ICON.formatted(hp);
   }
 
+  // Internal logic
   public boolean isAlive() {
     return hp > 0;
-  }
-
-  public boolean isInPosition(Position pos) {
-    return row == pos.getRow() && col == pos.getCol();
   }
 
   public void receiveAttack(int damage) {
@@ -56,11 +44,11 @@ public class Zombie {
   public void update() {
     // TODO Preguntar si el zombie siempre ataca, sin tener en cuenta el com
     if (counter == MOVE_EVERY_CYCLES && isAlive()) {
-      Position pos = new Position(row, col - 1);
-      if (!game.isEmpty(pos)) {
-        attack(pos);
+      Position posLeft = pos.myLeft();
+      if (!game.isEmpty(posLeft)) {
+        attack(posLeft);
       } else {
-        col -= 1;
+        pos.advanceLeft();
       }
       counter = 0;
     }
@@ -77,5 +65,17 @@ public class Zombie {
         game.getSunflowerByPosition(pos).receiveDamage(DAMAGE);
       }
     }
+  }
+
+  public boolean isInPosition(Position pos) {
+    return this.pos.equals(pos);
+  }
+
+  public boolean isInRow(int row) {
+    return pos.isInRow(row);
+  }
+
+  public boolean hasCrossed() {
+    return pos.crossed();
   }
 }
