@@ -36,12 +36,13 @@ public class SunflowerList {
     }
   }
 
-  public Sunflower getSunflowerByPosition(Position pos) {
+  public void attackedSunflower(Position pos, int dmg) {
     int i = 0;
     while (!list[i].isInPosition(pos) && i < counter) {
       i++;
     }
-    return list[i];
+    
+    list[i].receiveDamage(dmg);
   }
 
   public void deleteDeath() {
@@ -57,5 +58,9 @@ public class SunflowerList {
         i++;
       }
     }
+  }
+
+  public void reset() {
+    this.counter = 0;
   }
 }

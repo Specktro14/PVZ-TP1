@@ -72,13 +72,11 @@ public class GamePrinter implements GameView {
     //   Messages.CONFIGURED_SEED.formatted(game.getSeed()) + NEW_LINE
     // );
     buffer.append(
-      Messages.NUMBER_OF_CYCLES.formatted(game.getCycleCounter()));
+      game.showCycleCounter());
     buffer.append(
-      Messages.NUMBER_OF_COINS.formatted(game.getSunCoins()));
+      game.showSunCoins());
     buffer.append(
-      Messages.REMAINING_ZOMBIES.formatted(
-        game.getZManager().getRemainingZombies()
-      ));
+      game.showRemainingZombies());
     buffer.append(NEW_LINE);
 
     return buffer.toString();
@@ -122,13 +120,7 @@ public class GamePrinter implements GameView {
   public void showEndMessage() {
     StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
     buffer.append("\n");
-    if (game.getPlayerQuits()) {
-      buffer.append(Messages.PLAYER_QUITS);
-    } else if (game.getPlayerDead()) {
-      buffer.append(Messages.ZOMBIES_WIN);
-    } else {
-      buffer.append(Messages.PLAYER_WINS);
-    }
+    buffer.append(game.showEndMessage());
     System.out.println(buffer);
   }
 

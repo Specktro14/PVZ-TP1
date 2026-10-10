@@ -2,9 +2,9 @@ package pvz.logic;
 
 import java.util.Random;
 import pvz.control.Level;
-import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.ZombieList;
 import pvz.utils.Position;
+import pvz.view.Messages;
 
 /**
  * Manages the full lifecycle of zombies for a game session.
@@ -60,7 +60,7 @@ public class ZombiesManager {
 
   public boolean addZombie(int row) {
     boolean canAdd =
-      getRemainingZombies() > 0 &&
+      remainingZombies > 0 &&
       shouldAddZombie() &&
       isPositionEmpty(Game.NUM_COLS - 1, row);
 
@@ -71,33 +71,45 @@ public class ZombiesManager {
     return canAdd;
   }
 
-  // ERROR: Peligro, getter suelto
-  public ZombieList getZombieList() {
-    return this.zombies;
-  }
-
   public boolean isPositionEmpty(int row, int col) {
     return game.isEmpty(new Position(row, col));
   }
 
-  // ERROR: Peligro, getter suelto
-  public int getRemainingZombies() {
-    return remainingZombies;
+  public String showRemainingZombies() {
+    return Messages.REMAINING_ZOMBIES.formatted(remainingZombies);
   }
 
   public boolean allZombiesDead() {
-    return remainingZombies == 0 && zombies.getCounter() == 0;
+    return remainingZombies == 0 && zombies.counterIsZero();
   }
 
-  public boolean zombiesInRow(int row) {
-    return zombies.getZombieIndexByRow(row) != -1;
+  public boolean areZombiesInRow(Position pos) {
+    return zombies.areZombiesInRow(pos);
   }
 
-  public Zombie getZombieByRow(int row) {
-    return zombies.getZombieByRow(row);
+  public void attackZombie(Position pos, int damage) {
+    zombies.attackZombie(pos, damage);
+  }
+
+  public String checkPosition(Position pos) {
+    return zombies.checkPosition(pos);
+  }
+
+  public void updateZombies() {
+    zombies.updateZombies();
+  }
+
+  public void deleteDeath() {
+    zombies.deleteDeath();
   }
 
   public boolean haveZombiesCrossed() {
     return zombies.haveZombiesCrossed();
+  }
+
+  public void reset(Random rand) {
+    this.rand = rand;
+    this.remainingZombies = level.getNumberOfZombies();
+    this.zombies.reset();
   }
 }

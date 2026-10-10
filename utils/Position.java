@@ -22,8 +22,8 @@ public class Position {
     return row == pos.row && col == pos.col;
   }
 
-  public boolean isInRow(int row) {
-    return this.row == row;
+  public boolean isInRow(Position pos) {
+    return this.row == pos.row;
   }
 
   public Position myLeft() {
@@ -53,7 +53,7 @@ public class Position {
   }
 
   private boolean outsideRight(int max_col) {
-    return col >= max_col;
+    return col > max_col;
   }
 
   private boolean outsideTop() {
@@ -61,6 +61,6 @@ public class Position {
   }
 
   private boolean outsideBottom(int max_row) {
-    return row >= max_row;
+    return row > max_row;
   }
 }

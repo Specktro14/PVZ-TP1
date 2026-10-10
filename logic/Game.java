@@ -6,8 +6,8 @@ import pvz.logic.gameobjects.Peashooter;
 import pvz.logic.gameobjects.PeashooterList;
 import pvz.logic.gameobjects.Sunflower;
 import pvz.logic.gameobjects.SunflowerList;
-import pvz.logic.gameobjects.ZombieList;
 import pvz.utils.Position;
+import pvz.view.Messages;
 
 /**
  * Game
@@ -24,10 +24,9 @@ public class Game {
   private Level level;
 
   // Managers
-  private ZombiesManager zombieM;
+  private ZombiesManager zManager;
 
   // Object lists
-  private ZombieList zList;
   private PeashooterList pList;
   private SunflowerList sList;
 
@@ -43,59 +42,62 @@ public class Game {
     this.seed = seed;
     this.level = level;
     this.rand = new Random(seed);
-    this.zombieM = new ZombiesManager(this, level, rand);
+    this.zManager = new ZombiesManager(this, level, rand);
     this.pList = new PeashooterList();
     this.sList = new SunflowerList();
-    this.zList = this.zombieM.getZombieList();
   }
 
-  // Getters
-  public int getCycleCounter() {
-    return this.cycleCounter;
+  // Getters para Gameview
+  public String showCycleCounter() {
+    return Messages.NUMBER_OF_CYCLES.formatted(cycleCounter);
   }
 
-  public int getSunCoins() {
-    return this.sunCoins;
+  public String showSunCoins() {
+    return Messages.NUMBER_OF_COINS.formatted(sunCoins);
   }
 
-  public int getRemainingZombies() {
-    return this.zombieM.getRemainingZombies();
+  public String showRemainingZombies() {
+    return zManager.showRemainingZombies();
   }
 
-  public long getSeed() {
-    return this.seed;
-  }
-
-  public Level getLevel() {
-    return this.level;
-  }
-
-  public ZombiesManager getZManager() {
-    return zombieM;
+  public String showEndMessage() {
+    String message;
+    if (playerQuit) {
+      message = Messages.PLAYER_QUITS;
+    } else if (playerDead) {
+      message = Messages.ZOMBIES_WIN;
+    } else {
+      message = Messages.PLAYER_WINS;
+    }
+    return message;
   }
 
   // Game ending conditions
-  public boolean getPlayerQuits() {
-    return this.playerQuit;
-  }
-
   public void setPlayerQuits(boolean newPQ) {
     this.playerQuit = newPQ;
   }
 
-  public boolean getPlayerDead() {
-    return this.playerDead;
-  }
-
   public void setPlayerDead() {
-    playerDead = zombieM.haveZombiesCrossed();
+    playerDead = zManager.haveZombiesCrossed();
   }
 
   public boolean hasGameFinished() {
-    return getPlayerQuits() || getPlayerDead() || zombieM.allZombiesDead();
+    return playerQuit || playerDead || zManager.allZombiesDead();
   }
 
   // Game object methods
+  public void addZombie() {
+    zManager.addZombie();
+  }
+
+  public boolean areZombiesInRow(Position pos) {
+    return zManager.areZombiesInRow(pos);
+  }
+
+  public void attackZombie(Position pos, int damage) {
+    zManager.attackZombie(pos, damage);
+  }
+
   public int addGameObject(String name, Position pos) {
     int exitCode = 0;
     if (checkIsPeashooter(name)) {
@@ -118,14 +120,20 @@ public class Game {
     return exitCode;
   }
 
-  public boolean checkIsPeashooter(String name) {
+  private boolean checkIsPeashooter(String name) {
     name.toLowerCase();
-    return name.equals("peashooter") || name.equals("p");
+    return (
+      name.equals(Messages.PEASHOOTER_NAME) ||
+      name.equals(Messages.PEASHOOTER_NAME.substring(0, 1))
+    );
   }
 
-  public boolean checkIsSunflower(String name) {
+  private boolean checkIsSunflower(String name) {
     name.toLowerCase();
-    return name.equals("sunflower") || name.equals("s");
+    return (
+      name.equals(Messages.SUNFLOWER_NAME) ||
+      name.equals(Messages.SUNFLOWER_NAME.substring(0, 1))
+    );
   }
 
   public boolean checkGameObject(String name) {
@@ -133,19 +141,19 @@ public class Game {
     return checkIsPeashooter(name) || checkIsSunflower(name);
   }
 
-  public Sunflower getSunflowerByPosition(Position pos) {
-    return sList.getSunflowerByPosition(pos);
+  public void attackSunflower(Position pos, int dmg) {
+    sList.attackedSunflower(pos, dmg);
   }
 
-  public Peashooter getPeashooterByPosition(Position pos) {
-    return pList.getPeashooterByPosition(pos);
+  public void attackPeashooter(Position pos, int dmg) {
+    pList.attackedPeashooter(pos, dmg);
   }
 
   // Position and board methods
   public boolean correctPosition(Position pos) {
     return isEmpty(pos) && isInsideBoard(pos);
   }
-  
+
   public boolean isInsideBoard(Position pos) {
     return pos.isInsideLimits(NUM_ROWS - 1, NUM_COLS - 1);
   }
@@ -159,7 +167,7 @@ public class Game {
     if (ret.equals("")) {
       ret = sList.checkPosition(pos);
       if (ret.equals("")) {
-        ret = zList.checkPosition(pos);
+        ret = zManager.checkPosition(pos);
       }
     }
     return ret;
@@ -170,7 +178,7 @@ public class Game {
     cycleCounter += 1;
     sList.updateSunflowers();
     pList.updatePeashooters();
-    zList.updateZombies();
+    zManager.updateZombies();
     removeDead();
     setPlayerDead();
   }
@@ -178,7 +186,7 @@ public class Game {
   private void removeDead() {
     sList.deleteDeath();
     pList.deleteDeath();
-    zList.deleteDeath();
+    zManager.deleteDeath();
   }
 
   public void addSunCoins(int sunCoins) {
@@ -186,16 +194,15 @@ public class Game {
   }
 
   public void substractSunCoins(int sunCoins) {
-    this.sunCoins -= sunCoins; 
+    this.sunCoins -= sunCoins;
   }
 
   // Reset
   public void reset() {
     this.rand = new Random(seed);
-    this.zombieM = new ZombiesManager(this, level, rand);
-    this.pList = new PeashooterList();
-    this.sList = new SunflowerList();
-    this.zList = this.zombieM.getZombieList();
+    this.zManager.reset(rand);
+    this.pList.reset();
+    this.sList.reset();
     this.cycleCounter = 0;
     this.sunCoins = INITIAL_SUNS;
     this.playerDead = false;

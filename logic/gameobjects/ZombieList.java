@@ -15,9 +15,8 @@ public class ZombieList {
     this.list = new Zombie[max];
   }
 
-  // ERROR Peligro, getter suelto
-  public int getCounter() {
-    return this.counter;
+  public boolean counterIsZero() {
+    return this.counter == 0;
   }
 
   public void addZombie(Position pos, Game game) {
@@ -43,18 +42,25 @@ public class ZombieList {
     }
   }
 
-  public int getZombieIndexByRow(int row) {
+  public boolean areZombiesInRow(Position pos) {
+    return getZombieIndexByRow(pos) != -1;
+  }
+  
+  private int getZombieIndexByRow(Position pos) {
     int i = 0;
-    while (i < counter && list[i].isInRow(row)) {
+    while (i < counter && !list[i].isInRow(pos)) {
       i++;
     }
     if (i >= counter) i = -1;
     return i;
   }
 
-  public Zombie getZombieByRow(int row) {
-    int index = getZombieIndexByRow(row);
-    return list[index];
+  public void attackZombie(Position pos, int damage){
+    getZombieByPos(pos).receiveAttack(damage);
+  }
+
+  private Zombie getZombieByPos(Position pos) {
+    return list[getZombieIndexByRow(pos)];
   }
 
   public boolean haveZombiesCrossed() {
@@ -80,5 +86,9 @@ public class ZombieList {
         i++;
       }
     }
+  }
+
+  public void reset() {
+    this.counter = 0;
   }
 }

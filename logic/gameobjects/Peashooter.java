@@ -9,7 +9,6 @@ public class Peashooter {
   private Position pos;
   private int hp;
 
-  private static final String NAME = "peashooter";
   private static final int COST = 50;
   private static final int ENDURANCE = 3;
   private static final int DAMAGE = 1;
@@ -41,22 +40,22 @@ public class Peashooter {
   }
 
   public boolean canBeAdded(int totalSuncoins) {
-    if (totalSuncoins > COST) game.substractSunCoins(COST);
-    return totalSuncoins > COST;
+    if (totalSuncoins >= COST) game.substractSunCoins(COST);
+    return totalSuncoins >= COST;
   }
 
   public void update() {
-    if (isAlive() && zombiesInRange()) {
+    if (zombiesInRange()) {
       shoot();
     }
   }
 
   private boolean zombiesInRange() {
-    return game.getZManager().zombiesInRow(row);
+    return game.areZombiesInRow(this.pos);
   }
 
   private void shoot() {
-    game.getZManager().getZombieByRow(row).receiveAttack(DAMAGE);
+    game.attackZombie(pos, DAMAGE);
   }
 
   public boolean isInPosition(Position pos) {

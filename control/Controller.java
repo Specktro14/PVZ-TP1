@@ -43,7 +43,7 @@ public class Controller {
 
       if (!reseted) {
         // Game_Actions
-        game.getZManager().addZombie();
+        game.addZombie();
 
         // Update
         game.update();
@@ -118,7 +118,8 @@ public class Controller {
         exitCode = 3;
       }
     } else {
-      exitCode = 1;
+      if (words.length < 4) exitCode = 1;
+      else exitCode = 5;
     }
 
     // Mostrando posibles errores
@@ -137,6 +138,10 @@ public class Controller {
       }
       case 4: {
         view.showError(Messages.NOT_ENOUGH_COINS);
+        break;
+      }
+      case 5: {
+        view.showError(Messages.TOO_MANY_COMMAND_PARAMETERS);
         break;
       }
       default:

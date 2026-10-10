@@ -36,12 +36,12 @@ public class PeashooterList {
     }
   }
 
-  public Peashooter getPeashooterByPosition(Position pos) {
+  public void attackedPeashooter(Position pos, int dmg) {
     int i = 0;
     while (!list[i].isInPosition(pos) && i < counter) {
       i++;
     }
-    return list[i];
+    list[i].receiveDamage(dmg);
   }
 
   public void deleteDeath() {
@@ -57,5 +57,9 @@ public class PeashooterList {
         i++;
       }
     }
+  }
+
+  public void reset() {
+    this.counter = 0;
   }
 }

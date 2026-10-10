@@ -42,12 +42,10 @@ public class Zombie {
   }
 
   public void update() {
-    // TODO Preguntar si el zombie siempre ataca, sin tener en cuenta el com
-    if (counter == MOVE_EVERY_CYCLES && isAlive()) {
-      Position posLeft = pos.myLeft();
-      if (!game.isEmpty(posLeft)) {
-        attack(posLeft);
-      } else {
+    Position posLeft = pos.myLeft();
+    attack(posLeft);
+    if (counter == MOVE_EVERY_CYCLES) {
+      if (game.isEmpty(posLeft)) {
         pos.advanceLeft();
       }
       counter = 0;
@@ -60,9 +58,9 @@ public class Zombie {
     if (icon.length() >= 2) {
       char plantType = icon.charAt(1);
       if (plantType == 'P') {
-        game.getPeashooterByPosition(pos).receiveDamage(DAMAGE);
+        game.attackPeashooter(pos, DAMAGE);
       } else if (plantType == 'S') {
-        game.getSunflowerByPosition(pos).receiveDamage(DAMAGE);
+        game.attackSunflower(pos, DAMAGE);
       }
     }
   }
@@ -71,8 +69,8 @@ public class Zombie {
     return this.pos.equals(pos);
   }
 
-  public boolean isInRow(int row) {
-    return pos.isInRow(row);
+  public boolean isInRow(Position pos) {
+    return this.pos.isInRow(pos);
   }
 
   public boolean hasCrossed() {

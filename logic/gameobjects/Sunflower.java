@@ -12,7 +12,6 @@ public class Sunflower {
   private Position pos;
   private int hp;
 
-  private static final String NAME = "sunflower";
   private static int COST = 20;
   private static int ENDURANCE = 1;
   private static int DAMAGE = 0;
@@ -40,8 +39,8 @@ public class Sunflower {
 
   // Internal logic
   public boolean canBeAdded(int totalSuncoins) {
-    if (totalSuncoins > COST) game.substractSunCoins(COST);
-    return totalSuncoins > COST;
+    if (totalSuncoins >= COST) game.substractSunCoins(COST);
+    return totalSuncoins >= COST;
   }
 
   public boolean isAlive() {
@@ -53,7 +52,7 @@ public class Sunflower {
   }
 
   public void update() {
-    if (this.counter == COOLDOWN && isAlive()) {
+    if (this.counter == COOLDOWN) {
       game.addSunCoins(10);
       counter = 0;
     }
