@@ -21,8 +21,6 @@ public enum Level {
 		this.zombieFrequency = zombieFrequency;
 	}
 
-	// TODO fill your code
-
 	public double getZombieFrequency() {
 	  return zombieFrequency;
 	}
